@@ -1,113 +1,141 @@
+import 'package:device_preview/device_preview.dart';
+import 'package:fiftyoneeast/util/AppLanguage.dart';
+import 'package:fiftyoneeast/util/AppLocalizations.dart';
+import 'package:fiftyoneeast/util/Logout.dart';
+import 'package:fiftyoneeast/view/ApplicationPreferencesScreen.dart';
+import 'package:fiftyoneeast/view/BrandScreen.dart';
+import 'package:fiftyoneeast/view/CommunicationPreferencesScreen.dart';
+import 'package:fiftyoneeast/view/MyComplaintScreen.dart';
+import 'package:fiftyoneeast/view/ComplaintsScreen.dart';
+import 'package:fiftyoneeast/view/EditProfileScreen.dart';
+import 'package:fiftyoneeast/view/GiftCardScreen.dart';
+import 'package:fiftyoneeast/view/LearnMoreScreenNew.dart';
+import 'package:fiftyoneeast/view/MyComplaintDetailScreen.dart';
+import 'package:fiftyoneeast/view/OfferDetailScreen.dart';
+import 'package:fiftyoneeast/view/SplashScreenNew.dart';
+import 'package:fiftyoneeast/view/StoreLocationScreen.dart';
+import 'package:fiftyoneeast/view/TierBenefit.dart';
+import 'package:fiftyoneeast/view/TierBenefitNew.dart';
+import 'package:fiftyoneeast/view/TransactionDetailScreen.dart';
+import 'package:fiftyoneeast/view/changepasswordscreen.dart';
+import 'package:fiftyoneeast/view/contactusscreen.dart';
+import 'package:fiftyoneeast/view/dashboardscreen.dart';
+import 'package:fiftyoneeast/view/faqscreen.dart';
+import 'package:fiftyoneeast/view/homescreen.dart';
+import 'package:fiftyoneeast/view/moreoptionscreen.dart';
+import 'package:fiftyoneeast/view/myaccount/claim/MyClaimDetailScreen.dart';
+import 'package:fiftyoneeast/view/myaccount/claim/MyClaimScreen.dart';
+import 'package:fiftyoneeast/view/myaccount/claim/claimpointsscreen.dart';
+import 'package:fiftyoneeast/view/myaccountscreen.dart';
+import 'package:fiftyoneeast/view/offersscreen.dart';
+import 'package:fiftyoneeast/view/registration/CreateAccountScreen.dart';
+import 'package:fiftyoneeast/view/registration/CreatePasswordScreen.dart';
+import 'package:fiftyoneeast/view/registration/EnterMobileNumberScreen.dart';
+import 'package:fiftyoneeast/view/registration/ForgotPasswordScreen.dart';
+import 'package:fiftyoneeast/view/registration/LoginScreen.dart';
+import 'package:fiftyoneeast/view/registration/OTP.dart';
+import 'package:fiftyoneeast/view/terms&conditionsscreen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/utils/AppLanguage.dart';
+import 'package:flutter_app/utils/AppLocalizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(MyApp());
+
+void main() async
+{
+  //--- create a instance of sharePrefernce
+  //await PreferenceUtils.getInstance();
+
+  WidgetsFlutterBinding.ensureInitialized();
+  AppLanguage appLanguage = AppLanguage();
+  await  appLanguage.fetchLocale();
+  runApp(Main(appLanguage: appLanguage,));
+  /*runApp(
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) =>  Main(appLanguage: appLanguage,),
+    ), );*/
+
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+class Main extends StatelessWidget
+{
+  final AppLanguage appLanguage;
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+  Main({this.appLanguage});
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
+  Widget build(BuildContext context)
+  {
+    return ChangeNotifierProvider<AppLanguage>(
+      builder: (context) => appLanguage,
+      child: Consumer<AppLanguage>(builder: (context, model, child)
+      {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primaryColor: Color(0xff9A6095),
+            primaryColorDark: Color(0xE66E2F68),
+            primaryColorLight: Color(0xffffffff),
+            fontFamily: 'RobotoSlab',
+          ),
+          //home: SplashScreenNew(),
+          //home: HomeScreen(),
+          home: ApplicationPreferencesScreen(),
+          routes: <String, WidgetBuilder>
+          {
+            '/login':(BuildContext context) => new LoginScreen(),
+            '/home':(BuildContext context) => new HomeScreen(),
+            '/createAccount':(BuildContext context) => new CreateAccountScreen(),
+            '/createPassword':(BuildContext context) => new CreatePasswordScreen(),
+            '/enterMobileNumber':(BuildContext context) => new EnterMobileNumberScreen(),
+            '/otp':(BuildContext context) => new OTP(),
+            '/forgotPassword':(BuildContext context) => new ForgotPasswordScreen(),
+            '/applicationPreferencesS':(BuildContext context) => new ApplicationPreferencesScreen(),
+            '/brand':(BuildContext context) => new BrandScreen(),
+            '/changepassword':(BuildContext context) => new ChangePassword(),
+            '/claimpoints':(BuildContext context) => new ClaimPoints(),
+            '/myClaimScreen':(BuildContext context) => new MyClaimScreen(),
+            '/myClaimDetailScreen':(BuildContext context) => new MyClaimDetailScreen(),
+            '/communicationPreferences':(BuildContext context) => new CommunicationPreferencesScreen(),
+            '/contactus':(BuildContext context) => new GetContactUsDetails(),
+            '/dashboard':(BuildContext context) => new DashboardScreen(),
+            '/editProfile':(BuildContext context) => new EditProfileScreen(),
+            '/faq':(BuildContext context) => new GetFAQDetails(),
+            '/learnMore':(BuildContext context) => new LearnMoreScreenNew(),
+            '/moreoptions':(BuildContext context) => new MoreOptions(),
+            '/myaccount':(BuildContext context) => new MyAccount(),
+            '/offerDetail':(BuildContext context) => new OfferDetailScreen(),
+            '/offersscreen':(BuildContext context) => new OfferScreen(),
+            '/splash':(BuildContext context) => new SplashScreenNew(),
+            '/storeLocation':(BuildContext context) => new StoreLocationScreen(),
+            '/termsCondition':(BuildContext context) => new GetTandCDetails(),
+            '/tierBenefit':(BuildContext context) => new TierBenefit(),
+            '/tierBenefitNew':(BuildContext context) => new TierBenefitNew(),
+            '/transactionDetail':(BuildContext context) => new TransactionDetailScreen(),
+            '/logout':(BuildContext context) => new Logout(),
+            '/giftCard':(BuildContext context) => new GiftCardScreen(),
+            '/complaints':(BuildContext context) => new ComplaintsScreen(),
+            '/myComplaintScreen':(BuildContext context) => new MyComplaintScreen(),
+            '/myComplaintDetail':(BuildContext context) => new MyComplaintDetailScreen(),
+          },
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+          locale: model.appLocal,
+          supportedLocales: [Locale('en', 'US'), Locale('ar', ''),],
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            // ... app-specific localization delegate[s] here
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
           ],
-        ),
+          //supportedLocales: [Locale("en"), Locale('ar')],
+          //onGenerateTitle: (BuildContext context) => AppLocalizations.of(context).title,
+        );
+      },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
